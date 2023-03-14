@@ -21,4 +21,7 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "performer_id")
     private User performer;
+    @ManyToOne
+    @JoinColumn(name = "realise_id")
+    private Realise realise;
 }
