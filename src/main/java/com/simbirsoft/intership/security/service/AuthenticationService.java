@@ -2,6 +2,7 @@ package com.simbirsoft.intership.security.service;
 
 import com.simbirsoft.intership.exception.NotFoundElementException;
 import com.simbirsoft.intership.model.User;
+import com.simbirsoft.intership.model.enumaration.Role;
 import com.simbirsoft.intership.repository.UserRepository;
 import com.simbirsoft.intership.security.auth.AuthenticationRequest;
 import com.simbirsoft.intership.security.auth.AuthenticationResponse;
@@ -11,6 +12,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +33,7 @@ public class AuthenticationService {
                 .fullName(request.getFullName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-//                .roles(Stream.of(Roles.UNIVERSITY).collect(Collectors.toSet()))
+                .roles(Stream.of(Role.USER).collect(Collectors.toSet()))
                 .build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);

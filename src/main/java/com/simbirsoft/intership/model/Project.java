@@ -1,10 +1,18 @@
 package com.simbirsoft.intership.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Entity(name = "projects")
+@Getter
+@Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "projects")
+@Entity
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,9 +21,4 @@ public class Project {
     @OneToOne
     @JoinColumn(name = "owner_id")
     private User owner;
-    @ManyToMany
-    @JoinTable(name = "project_member",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "member_id"))
-    private List<User> members;
 }

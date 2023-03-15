@@ -1,5 +1,6 @@
 package com.simbirsoft.intership.model;
 
+import com.simbirsoft.intership.model.enumaration.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,7 @@ public class User implements UserDetails {
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    @Column(name = "roles")
+//    @Column(name = "roles")
     private Set<Role> roles;
 
     @Override

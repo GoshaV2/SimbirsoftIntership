@@ -28,6 +28,21 @@ databaseChangeLog:
               - column:
                   name: full_name
                   type: varchar(70)
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_address_user
+                    references: users(id)
+              - column:
+                  name: roles
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
   - changeSet:
       id: 2
       author: Gosha
@@ -63,11 +78,6 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    nullable: false
-              - column:
-                  name: permission
-                  type: varchar(100)
-                  constraints:
                     nullable: false
               - column:
                   name: project_id
@@ -136,6 +146,13 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: project_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_address_project
+                    references: projects(id)
+              - column:
                   name: owner_id
                   type: BIGINT
                   constraints:
@@ -156,20 +173,19 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_address_realise
                     references: realises(id)
+
         - createTable:
-            tableName: project_member
+            tableName: permissions
             columns:
               - column:
-                  name: project_id
+                  name: project_permission_id
                   type: BIGINT
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_address_project
-                    references: projects(id)
+                    foreignKeyName: fk_address_project_permission
+                    references: project_permissions(id)
               - column:
-                  name: member_id
-                  type: BIGINT
+                  name: permissions
+                  type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_address_member
-                    references: users(id)
