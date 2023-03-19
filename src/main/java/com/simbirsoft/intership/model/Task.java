@@ -28,12 +28,12 @@ public class Task {
     @JoinColumn(name = "project_id")
     private Project project;
     @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id",nullable = false)
     private User owner;
     @ManyToOne
-    @JoinColumn(name = "performer_id")
+    @JoinColumn(name = "performer_id",nullable = false)
     private User performer;
     @ManyToOne
-    @JoinColumn(name = "realise_id")
+    @JoinColumn(name = "realise_id",nullable = false)
     private Realise realise;
 }

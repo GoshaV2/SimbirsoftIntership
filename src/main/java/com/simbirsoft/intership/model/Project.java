@@ -1,5 +1,6 @@
 package com.simbirsoft.intership.model;
 
+import com.simbirsoft.intership.model.enumaration.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -19,6 +20,9 @@ public class Project {
     private Long id;
     private String title;
     @OneToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id",nullable = false)
     private User owner;
+    @Enumerated(EnumType.STRING)
+    @JoinColumn(name = "project_status",nullable = false)
+    private ProjectStatus projectStatus;
 }

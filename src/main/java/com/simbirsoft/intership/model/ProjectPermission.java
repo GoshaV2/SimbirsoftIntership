@@ -23,17 +23,17 @@ public class ProjectPermission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id",nullable = false)
     private Project project;
     //todo delete this comment and delete fields from db
     /*@Enumerated(EnumType.STRING)
     @JoinColumn(name = "permission")
     private Permission permission;*/
     @ElementCollection(targetClass = Permission.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "permissions", joinColumns = @JoinColumn(name = "project_permission_id"))
+    @CollectionTable(name = "permissions", joinColumns = @JoinColumn(name = "project_permission_id",nullable = false))
     @Enumerated(EnumType.STRING)
     private Set<Permission> permissions;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",nullable = false)
     private User user;
 }

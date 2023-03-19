@@ -63,6 +63,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: project_status
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
                   name: owner_id
                   type: BIGINT
                   constraints:

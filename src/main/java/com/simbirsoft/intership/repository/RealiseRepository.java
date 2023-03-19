@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface RealiseRepository extends JpaRepository<Realise, Long> {
     Optional<Realise> findByIdAndProjectId(long id,long projectId);
+    void deleteRealiseByIdAndProjectId(long id, long projectId);
 }
