@@ -21,7 +21,7 @@ public class UserWithPermissionDto {
     private Set<Role> roles;
 
     public static UserWithPermissionDto from(ProjectPermission projectPermission) {
-        User user=projectPermission.getUser();
+        User user = projectPermission.getUser();
         return UserWithPermissionDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())

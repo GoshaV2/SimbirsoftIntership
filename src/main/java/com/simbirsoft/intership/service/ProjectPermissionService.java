@@ -1,10 +1,13 @@
 package com.simbirsoft.intership.service;
 
 import com.simbirsoft.intership.exception.AlreadyHasPermissionException;
+import com.simbirsoft.intership.exception.NotFoundPermissionException;
 import com.simbirsoft.intership.model.Project;
 import com.simbirsoft.intership.model.ProjectPermission;
 import com.simbirsoft.intership.model.User;
 import com.simbirsoft.intership.model.enumaration.Permission;
+
+import java.util.List;
 
 /**
  * Сервис для проверки прав доступа пользователя к проекту.
@@ -52,5 +55,24 @@ public interface ProjectPermissionService {
      * @throws com.simbirsoft.intership.exception.NotFoundPermissionException если не были найдены права доступа
      */
     void deletePermission(User user, Project project);
+
+
+    /**
+     * Получить все возможные доступы пользователя
+     *
+     * @param user пользователь
+     * @return все доступы к проектам
+     */
+    List<ProjectPermission> getAllProjectPermissionOfUser(User user);
+
+    /**
+     * Получить права доступа всех проектов
+     *
+     * @param projectId id проекта
+     * @param user      пользователь
+     * @return список доступов к проекту
+     * @throws NotFoundPermissionException нету доступа для операции
+     */
+    List<ProjectPermission> getAllProjectPermissionOfProject(long projectId, User user);
 
 }

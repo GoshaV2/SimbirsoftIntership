@@ -11,6 +11,8 @@ import com.simbirsoft.intership.exception.TaskNotDoneException;
 import com.simbirsoft.intership.model.Project;
 import com.simbirsoft.intership.model.User;
 
+import java.util.List;
+
 /**
  * Сервис управления проекта
  */
@@ -84,6 +86,23 @@ public interface ProjectService {
      * @throws ProjectClosedException                                         проект уже закрыт
      */
     void closeProject(long projectId, User user);
+
+    /**
+     * Получить список проектов пользователя
+     *
+     * @param user пользователь
+     * @return список проектов с ограниченными данными
+     */
+    List<ProjectDto> getProjectsOfUser(User user);
+
+    /**
+     * Получить пользователей из проекта
+     *
+     * @param projectId id проекта
+     * @param user      пользователь
+     * @return пользователи с ограниченной информацией
+     */
+    List<UserWithPermissionDto> getUsersOfProject(long projectId, User user);
 }
 
 

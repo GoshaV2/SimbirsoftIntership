@@ -1,6 +1,5 @@
 package com.simbirsoft.intership.model;
 
-import com.simbirsoft.intership.model.Project;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

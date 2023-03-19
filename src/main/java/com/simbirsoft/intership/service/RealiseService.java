@@ -8,6 +8,8 @@ import com.simbirsoft.intership.exception.RealiseHasTaskException;
 import com.simbirsoft.intership.model.Realise;
 import com.simbirsoft.intership.model.User;
 
+import java.util.List;
+
 /**
  * Сервис управляющий релизами проекта
  */
@@ -38,8 +40,18 @@ public interface RealiseService {
      * @throws com.simbirsoft.intership.exception.NotFoundProjectException не был найден проект
      * @throws ProjectClosedException                                      проект закрыт
      * @throws RealiseHasTaskException                                     релиз содержит задачи
-     * @throws NotFoundRealiseException не найден релиз
+     * @throws NotFoundRealiseException                                    не найден релиз
      */
     void deleteRealise(long realiseId, long projectId, User user);
+
+    /**
+     * Получение релизов проекта
+     *
+     * @param projectId id проекта
+     * @param user      пользователь
+     * @return список релизов с ограниченными данными
+     * @throws com.simbirsoft.intership.exception.NotFoundPermissionException нет доступа к проекту
+     */
+    List<RealiseDto> getRealisesOfProject(long projectId, User user);
 }
 

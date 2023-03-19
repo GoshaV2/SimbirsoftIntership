@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,10 +49,20 @@ public class ProjectPermissionServiceImpl implements ProjectPermissionService {
     @Override
     @Transactional
     public void deletePermission(User user, Project project) {
-        ProjectPermission projectPermission=getPermission(user.getId(),project.getId());
+        ProjectPermission projectPermission = getPermission(user.getId(), project.getId());
         projectPermissionRepository.delete(projectPermission);
     }
 
+    @Override
+    public List<ProjectPermission> getAllProjectPermissionOfUser(User user) {
+        return projectPermissionRepository.findAllByUser(user);
+    }
+
+    @Override
+    public List<ProjectPermission> getAllProjectPermissionOfProject(long projectId, User user) {
+        ProjectPermission projectPermission = getPermission(user.getId(), projectId);
+        return projectPermissionRepository.findAllByProject(projectPermission.getProject());
+    }
 
     private void hasNotPermission(long userId, long projectId) {
         if (projectPermissionRepository.existsByUserIdAndProjectId(userId, projectId)) {
@@ -59,9 +70,4 @@ public class ProjectPermissionServiceImpl implements ProjectPermissionService {
         }
     }
 
-    private void hasPermission(long userId, long projectId) {
-        if (!projectPermissionRepository.existsByUserIdAndProjectId(userId, projectId)) {
-            throw new NotFoundPermissionException(userId, projectId);
-        }
-    }
 }

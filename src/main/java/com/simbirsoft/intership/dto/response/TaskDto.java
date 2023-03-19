@@ -1,7 +1,6 @@
 package com.simbirsoft.intership.dto.response;
 
 import com.simbirsoft.intership.model.Project;
-import com.simbirsoft.intership.model.Realise;
 import com.simbirsoft.intership.model.Task;
 import com.simbirsoft.intership.model.enumaration.TaskStatus;
 import lombok.Getter;
@@ -19,14 +18,14 @@ public class TaskDto {
     private UserDto performer;
     private RealiseDto realise;
 
-    public static TaskDto from(Task task, Realise realise, Project project) {
+    public static TaskDto from(Task task, Project project) {
         return TaskDto.builder()
                 .id(task.getId())
                 .title(task.getTitle())
                 .taskStatus(task.getTaskStatus())
                 .owner(UserDto.from(task.getOwner()))
                 .performer(UserDto.from(task.getPerformer()))
-                .realise(RealiseDto.from(realise,project))
+                .realise(RealiseDto.from(task.getRealise(), project))
                 .build();
     }
 }

@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreatingProjectDto {
-    @Size(min = 10,max = 100)
+    @Size(min = 10, max = 100)
     private String title;
 }

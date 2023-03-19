@@ -2,10 +2,11 @@ package com.simbirsoft.intership.model;
 
 import com.simbirsoft.intership.model.enumaration.ProjectStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -20,9 +21,9 @@ public class Project {
     private Long id;
     private String title;
     @OneToOne
-    @JoinColumn(name = "owner_id",nullable = false)
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "project_status",nullable = false)
+    @JoinColumn(name = "project_status", nullable = false)
     private ProjectStatus projectStatus;
 }

@@ -7,6 +7,7 @@ import com.simbirsoft.intership.exception.ProjectClosedException;
 import com.simbirsoft.intership.exception.RealiseHasTaskException;
 import com.simbirsoft.intership.exception.UncorrectedDatesException;
 import com.simbirsoft.intership.model.Project;
+import com.simbirsoft.intership.model.ProjectPermission;
 import com.simbirsoft.intership.model.Realise;
 import com.simbirsoft.intership.model.User;
 import com.simbirsoft.intership.model.enumaration.ProjectStatus;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +28,17 @@ public class RealiseServiceImpl implements RealiseService {
     private final ProjectService projectService;
     private final RealiseRepository realiseRepository;
     private final TaskRepository taskRepository;
+
+    private final ProjectPermissionService projectPermissionService;
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<RealiseDto> getRealisesOfProject(long projectId, User user) {
+        ProjectPermission projectPermission = projectPermissionService.getPermission(user.getId(), projectId);
+        return realiseRepository.findAllByProject(projectPermission.getProject()).stream()
+                .map(realise -> RealiseDto.from(realise, projectPermission.getProject()))
+                .toList();
+    }
 
     @Transactional
     @Override
@@ -61,7 +74,7 @@ public class RealiseServiceImpl implements RealiseService {
         if (taskRepository.existsByRealiseId(realiseId)) {
             throw new RealiseHasTaskException(realiseId);
         }
-        Realise realise=getRealise(realiseId,project.getId());
+        Realise realise = getRealise(realiseId, project.getId());
         realiseRepository.delete(realise);
     }
 

@@ -18,9 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +29,22 @@ public class ProjectServiceImpl implements ProjectService {
     private final UserService userService;
     private final TaskRepository taskRepository;
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<ProjectDto> getProjectsOfUser(User user) {
+        return projectPermissionService.getAllProjectPermissionOfUser(user).stream()
+                .map(projectPermission -> ProjectDto.from(projectPermission.getProject()))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<UserWithPermissionDto> getUsersOfProject(long projectId, User user) {
+        return projectPermissionService.getAllProjectPermissionOfProject(projectId, user).stream()
+                .map(UserWithPermissionDto::from)
+                .toList();
+    }
+
     @Transactional
     @Override
     public ProjectDto createProject(CreatingProjectDto creatingProject, User user) {
@@ -40,14 +54,13 @@ public class ProjectServiceImpl implements ProjectService {
                 .projectStatus(ProjectStatus.ACTIVE)
                 .build());
         projectPermissionService.addPermission(user, project, Permission.Leading);
-        return ProjectDto.from(project, user);
+        return ProjectDto.from(project);
     }
 
     @Override
     public Project findProjectForOwner(long projectId, User user) {
-        Project project = projectRepository.findProjectByIdAndOwner(projectId, user)
+        return projectRepository.findProjectByIdAndOwner(projectId, user)
                 .orElseThrow(() -> new NotFoundProjectException(projectId, user.getId()));
-        return project;
     }
 
     @Transactional
@@ -55,14 +68,14 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDto updateProject(long projectId, UpdatingProjectDto updatingProjectDto, User user) {
         Project project = findProjectForOwner(projectId, user);
         project.setTitle(updatingProjectDto.getTitle());
-        return ProjectDto.from(projectRepository.save(project), user);
+        return ProjectDto.from(projectRepository.save(project));
     }
 
     @Override
     public void closeProject(long projectId, User user) {
         Project project = findProjectForOwner(projectId, user);
-        if(project.getProjectStatus()==ProjectStatus.CLOSED){
-            throw new ProjectClosedException(projectId,user.getId());
+        if (project.getProjectStatus() == ProjectStatus.CLOSED) {
+            throw new ProjectClosedException(projectId, user.getId());
         }
         if (!taskRepository.tasksIsDone(project)) {
             throw new TaskNotDoneException(projectId);

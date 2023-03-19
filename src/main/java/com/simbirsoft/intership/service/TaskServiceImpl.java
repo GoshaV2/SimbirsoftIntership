@@ -19,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
@@ -47,7 +49,7 @@ public class TaskServiceImpl implements TaskService {
                 .project(permissionLeading.getProject())
                 .realise(realise)
                 .build());
-        return TaskDto.from(task, realise, permissionLeading.getProject());
+        return TaskDto.from(task, permissionLeading.getProject());
     }
 
     @Transactional
@@ -71,7 +73,7 @@ public class TaskServiceImpl implements TaskService {
         task.setPerformer(permissionPerformer.getUser());
         task.setTitle(updatingTaskDto.getTitle());
 
-        return TaskDto.from(taskRepository.save(task), realise, permissionOwner.getProject());
+        return TaskDto.from(taskRepository.save(task), permissionOwner.getProject());
     }
 
     @Transactional
@@ -115,5 +117,14 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findTaskByIdAndProjectId(taskId, projectId)
                 .orElseThrow(() -> new NotFoundTaskException(taskId, projectId));
         taskRepository.delete(task);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<TaskDto> getTaskOfProject(long projectId, User user) {
+        ProjectPermission projectPermission = projectPermissionService.getPermission(user.getId(), projectId);
+        return taskRepository.findAllByProject(projectPermission.getProject()).stream()
+                .map(task -> TaskDto.from(task, projectPermission.getProject()))
+                .toList();
     }
 }

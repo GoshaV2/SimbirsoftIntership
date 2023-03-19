@@ -1,7 +1,6 @@
 package com.simbirsoft.intership.dto.response;
 
 import com.simbirsoft.intership.model.Project;
-import com.simbirsoft.intership.model.User;
 import com.simbirsoft.intership.model.enumaration.ProjectStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,12 +15,12 @@ public class ProjectDto {
     private String title;
     private ProjectStatus projectStatus;
 
-    public static ProjectDto from(Project project, User owner) {
+    public static ProjectDto from(Project project) {
         return ProjectDto.builder()
                 .id(project.getId())
                 .title(project.getTitle())
                 .projectStatus(project.getProjectStatus())
-                .owner(UserDto.from(owner))
+                .owner(UserDto.from(project.getOwner()))
                 .build();
     }
 }

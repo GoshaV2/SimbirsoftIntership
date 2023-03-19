@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreatingTaskDto {
-    @Size(min = 10,max = 100)
+    @Size(min = 10, max = 100)
     private String title;
     private long projectId;
     private long performerId;
